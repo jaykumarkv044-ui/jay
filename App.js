@@ -1,0 +1,25 @@
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import HomeScreen from './src/screens/HomeScreen';
+import GameScreen from './src/screens/GameScreen';
+import RewardScreen from './src/screens/RewardScreen';
+import ParentPINScreen from './src/screens/ParentPINScreen';
+import ParentDashboardScreen from './src/screens/ParentDashboardScreen';
+
+const Stack = createNativeStackNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Game" component={GameScreen} />
+        <Stack.Screen name="Reward" component={RewardScreen} />
+        <Stack.Screen name="ParentPIN" component={ParentPINScreen} />
+        <Stack.Screen name="ParentDashboard" component={ParentDashboardScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
