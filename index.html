@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AusHealth Check | The Intelligent Coverage Browser</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --accent: #2d6ff7;
+            --surface: #111111;
+            --border: #222222;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-mark {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #2d6ff7, #00d2ff);
+            border-radius: 6px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        .btn {
+            background: var(--text-main);
+            color: var(--bg-color);
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: transform 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(45,111,247,0.15) 0%, rgba(5,5,5,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .status-badge {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards 0.2s;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ffaa;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ffaa;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+            max-width: 900px;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards 0.4s;
+        }
+
+        h1 span {
+            background: linear-gradient(to right, #fff, #777);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards 0.6s;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards 0.8s;
+        }
+
+        .mockup-container {
+            margin-top: 80px;
+            width: 100%;
+            max-width: 1000px;
+            perspective: 1000px;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards 1s;
+        }
+
+        .app-window {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            transform: rotateX(5deg) translateY(0);
+            transition: transform 0.5s ease;
+        }
+
+        .app-window:hover {
+            transform: rotateX(0deg) translateY(-10px);
+        }
+
+        .app-header {
+            background: #1a1a1a;
+            padding: 12px 20px;
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .window-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #333;
+        }
+
+        .app-body {
+            padding: 40px;
+            min-height: 400px;
+            display: flex;
+            gap: 40px;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=');
+        }
+
+        .search-demo {
+            flex: 1;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .demo-input {
+            width: 100%;
+            background: var(--bg-color);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 6px;
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+        }
+
+        .result-demo {
+            background: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+            border-radius: 6px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .result-demo h2 {
+            color: #28a745;
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .features {
+            padding: 120px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 80px;
+            letter-spacing: -1px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--text-muted);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 24px;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            padding: 40px 0;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+        }
+
+        .marquee {
+            display: flex;
+            gap: 40px;
+            animation: scroll 20s linear infinite;
+            white-space: nowrap;
+        }
+
+        .marquee span {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        footer {
+            padding: 60px 40px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <div class="logo-mark"></div>
+            AusHealth Check
+        </div>
+        <div class="nav-links">
+            <a href="#">Product</a>
+            <a href="#">Insurers</a>
+            <a href="#">Pricing</a>
+        </div>
+        <div>
+            <a href="#" class="btn btn-outline" style="margin-right: 10px;">Login</a>
+            <a href="#" class="btn">Join Waitlist</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="status-badge">
+            <div class="status-dot"></div>
+            Beta Access Available
+        </div>
+
+        <h1>
+            The Intelligent<br>
+            <span>Coverage Checker.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+            Search, verify, and understand your private health insurance coverage instantly. No more PDF hunting. Available on web and desktop.
+        </p>
+
+        <div class="hero-actions">
+            <button class="btn" style="padding: 15px 30px; font-size: 1.1rem;">Start Checking Free</button>
+            <button class="btn btn-outline" style="padding: 15px 30px; font-size: 1.1rem;">Watch Demo</button>
+        </div>
+
+        <div class="mockup-container">
+            <div class="app-window">
+                <div class="app-header">
+                    <div class="window-dot" style="background: #ff5f56;"></div>
+                    <div class="window-dot" style="background: #ffbd2e;"></div>
+                    <div class="window-dot" style="background: #27c93f;"></div>
+                </div>
+                <div class="app-body">
+                    <div class="search-demo">
+                        <div style="margin-bottom: 8px; color: var(--text-muted); font-size: 0.8rem; font-weight: bold;">INSURER</div>
+                        <div class="demo-input">Bupa - Ultimate Health Cover</div>
+
+                        <div style="margin-bottom: 8px; color: var(--text-muted); font-size: 0.8rem; font-weight: bold; margin-top: 20px;">PROCEDURE CODE</div>
+                        <div class="demo-input">MBS Item: 47916 (Knee Arthroscopy)</div>
+
+                        <button class="btn" style="width: 100%; margin-top: 20px; padding: 15px;">Analyze Coverage</button>
+                    </div>
+                    <div class="search-demo" style="display: flex; flex-direction: column; justify-content: center;">
+                        <div class="result-demo">
+                            <h2>YES</h2>
+                            <p style="color: white; font-weight: bold; margin-bottom: 10px;">This procedure is covered.</p>
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">Clinical Category: Joint Reconstructions</p>
+                            <div style="margin-top: 20px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 4px; font-size: 0.8rem; text-align: left; color: #ccc;">
+                                💡 Waiting period: 12 months for pre-existing conditions.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="marquee-container">
+        <div class="marquee">
+            <span>BUPA</span> • <span>MEDIBANK</span> • <span>HCF</span> • <span>NIB</span> • <span>HBF</span> • <span>AUSTRALIAN UNITY</span> • <span>TEACHERS HEALTH</span> •
+            <span>BUPA</span> • <span>MEDIBANK</span> • <span>HCF</span> • <span>NIB</span> • <span>HBF</span> • <span>AUSTRALIAN UNITY</span> • <span>TEACHERS HEALTH</span> •
+        </div>
+    </div>
+
+    <section class="features">
+        <h2 class="section-title">Everything you need to know,<br>in one place.</h2>
+
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>Instant Verification</h3>
+                <p>Type an MBS code or procedure name and get a YES/NO answer instantly. We map the government data so you don't have to.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">📖</div>
+                <h3>Plain English</h3>
+                <p>Medical jargon translated. Understand exactly what "Tonsil, Adenoid and Grommet Procedures" actually means for you.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">⏱️</div>
+                <h3>Waiting Periods</h3>
+                <p>Know your stand-down periods before you book surgery. Clear rules for new vs. pre-existing conditions.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🔄</div>
+                <h3>Compare & Switch</h3>
+                <p>Procedure not covered? Instantly see which tier you need to upgrade to, or find a new insurer that covers it.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🔒</div>
+                <h3>Privacy First</h3>
+                <p>No personal data required. Check coverage completely anonymously without logging into your insurer portal.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">📱</div>
+                <h3>Fluent Interface</h3>
+                <p>Designed for speed. Use keyboard shortcuts on desktop, or tap through seamlessly on your mobile device.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="hero" style="min-height: 60vh; text-align: center;">
+        <h2 style="font-size: 4rem; margin-bottom: 30px;">Stop guessing about<br>your health cover.</h2>
+        <button class="btn" style="padding: 20px 40px; font-size: 1.2rem;">Get Started Now</button>
+    </section>
+
+    <footer>
+        <div>
+            <div class="logo" style="margin-bottom: 20px;">
+                <div class="logo-mark"></div>
+                AusHealth Check
+            </div>
+            <p>© 2024 AusHealth Check. All rights reserved.</p>
+        </div>
+        <div style="display: flex; gap: 40px;">
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <strong style="color: white;">Product</strong>
+                <a href="#" style="color: var(--text-muted); text-decoration: none;">Features</a>
+                <a href="#" style="color: var(--text-muted); text-decoration: none;">Insurers</a>
+                <a href="#" style="color: var(--text-muted); text-decoration: none;">Pricing</a>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <strong style="color: white;">Legal</strong>
+                <a href="#" style="color: var(--text-muted); text-decoration: none;">Privacy Policy</a>
+                <a href="#" style="color: var(--text-muted); text-decoration: none;">Terms of Service</a>
+                <a href="#" style="color: var(--text-muted); text-decoration: none;">Disclaimer</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
