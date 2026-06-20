@@ -2,11 +2,17 @@ const express = require('express');
 const cors = require('cors');
 const db = require('./db');
 
+const path = require('path');
+
 const app = express();
-const port = 3001; // changed to 3001 because Expo will use 3000 for live preview
+// Use the port provided by the hosting service, or fallback to 3001
+const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+
+// Serve the static frontend files if we are in production
+app.use(express.static(path.join(__dirname, '../dist')));
 
 // Get list of unique insurers
 app.get('/api/insurers', (req, res) => {
@@ -99,6 +105,17 @@ app.get('/api/check-hospital', (req, res) => {
       });
     });
   });
+});
+
+// Fallback to serve the React app for any other route
+// Express 5.x uses path-to-regexp v8 which drops support for wildcard (*).
+// Catch-all route needs to be defined differently.
+app.use((req, res, next) => {
+  if (req.method === 'GET' && !req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+  } else {
+    next();
+  }
 });
 
 app.listen(port, () => {
