@@ -111,13 +111,64 @@
         .hero::before {
             content: '';
             position: absolute;
-            width: 600px;
-            height: 600px;
+            width: 800px;
+            height: 800px;
             background: radial-gradient(circle, rgba(45,111,247,0.15) 0%, rgba(5,5,5,0) 70%);
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: -1;
+        }
+
+        /* Fun Floating Emojis */
+        .floating-emoji {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 20px rgba(45,111,247,0.3));
+            animation: float 6s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        .e1 { top: 20%; left: 15%; animation-delay: 0s; font-size: 4rem; transform: rotate(-15deg); }
+        .e2 { top: 60%; left: 10%; animation-delay: 2s; font-size: 2.5rem; transform: rotate(20deg); }
+        .e3 { top: 30%; right: 15%; animation-delay: 1s; font-size: 3.5rem; transform: rotate(10deg); }
+        .e4 { top: 65%; right: 12%; animation-delay: 3s; font-size: 3rem; transform: rotate(-25deg); }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        /* Heartbeat Line Animation */
+        .heartbeat-line {
+            position: absolute;
+            top: 40%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, rgba(45,111,247,0.1) 20%, rgba(255,40,90,0.5) 50%, rgba(45,111,247,0.1) 80%, transparent 100%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .heartbeat-pulse {
+            position: absolute;
+            top: 50%;
+            left: -50px;
+            width: 50px;
+            height: 50px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0 50 L20 50 L30 20 L45 80 L60 40 L70 50 L100 50" stroke="%23ff2a5f" stroke-width="4" fill="none"/></svg>') no-repeat center;
+            transform: translateY(-50%);
+            animation: travel 4s linear infinite;
+        }
+
+        @keyframes travel {
+            0% { left: -10%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { left: 110%; opacity: 0; }
         }
 
         .status-badge {
@@ -370,23 +421,32 @@
     </nav>
 
     <section class="hero">
+        <!-- Fun Background Elements -->
+        <div class="heartbeat-line">
+            <div class="heartbeat-pulse"></div>
+        </div>
+        <div class="floating-emoji e1">🩺</div>
+        <div class="floating-emoji e2">💊</div>
+        <div class="floating-emoji e3">🩹</div>
+        <div class="floating-emoji e4">🤒</div>
+
         <div class="status-badge">
             <div class="status-dot"></div>
-            Beta Access Available
+            100% PDF-Free Zone
         </div>
 
         <h1>
-            The Intelligent<br>
-            <span>Coverage Checker.</span>
+            Private Health Cover,<br>
+            <span>Minus the Migraine.</span>
         </h1>
 
         <p class="hero-subtitle">
-            Search, verify, and understand your private health insurance coverage instantly. No more PDF hunting. Available on web and desktop.
+            Instantly check if your surgery is covered without calling elevator music. Type a procedure, get a YES or NO. It's that simple.
         </p>
 
         <div class="hero-actions">
-            <button class="btn" style="padding: 15px 30px; font-size: 1.1rem;">Start Checking Free</button>
-            <button class="btn btn-outline" style="padding: 15px 30px; font-size: 1.1rem;">Watch Demo</button>
+            <button class="btn" style="padding: 15px 30px; font-size: 1.1rem;">Cure my Confusion</button>
+            <button class="btn btn-outline" style="padding: 15px 30px; font-size: 1.1rem;">See the Magic</button>
         </div>
 
         <div class="mockup-container">
@@ -429,50 +489,50 @@
     </div>
 
     <section class="features">
-        <h2 class="section-title">Everything you need to know,<br>in one place.</h2>
+        <h2 class="section-title">Health insurance is painful.<br>Checking it shouldn't be.</h2>
 
         <div class="grid">
             <div class="card">
-                <div class="card-icon">⚡</div>
-                <h3>Instant Verification</h3>
-                <p>Type an MBS code or procedure name and get a YES/NO answer instantly. We map the government data so you don't have to.</p>
+                <div class="card-icon">🔥</div>
+                <h3>Burn the PDFs</h3>
+                <p>We read the 40-page government product disclosure statements so you don't have to. You're welcome.</p>
             </div>
 
             <div class="card">
-                <div class="card-icon">📖</div>
-                <h3>Plain English</h3>
-                <p>Medical jargon translated. Understand exactly what "Tonsil, Adenoid and Grommet Procedures" actually means for you.</p>
+                <div class="card-icon">🗣️</div>
+                <h3>Doctor-to-Human Translation</h3>
+                <p>We take terrifying terms like "Gastrointestinal Endoscopy" and translate them into things normal humans say (like "stomach scope").</p>
             </div>
 
             <div class="card">
                 <div class="card-icon">⏱️</div>
-                <h3>Waiting Periods</h3>
-                <p>Know your stand-down periods before you book surgery. Clear rules for new vs. pre-existing conditions.</p>
+                <h3>The Waiting Game</h3>
+                <p>We tell you exactly how long you have to wait before you can claim. Spoiler: it's usually 12 months for that bad knee.</p>
             </div>
 
             <div class="card">
-                <div class="card-icon">🔄</div>
-                <h3>Compare & Switch</h3>
-                <p>Procedure not covered? Instantly see which tier you need to upgrade to, or find a new insurer that covers it.</p>
+                <div class="card-icon">🤑</div>
+                <h3>Compare & Upgrade</h3>
+                <p>Got a big fat NO? We'll show you exactly which product you need to switch to so you can get that surgery.</p>
             </div>
 
             <div class="card">
-                <div class="card-icon">🔒</div>
-                <h3>Privacy First</h3>
-                <p>No personal data required. Check coverage completely anonymously without logging into your insurer portal.</p>
+                <div class="card-icon">🕵️</div>
+                <h3>Incognito Mode</h3>
+                <p>No login. No email. No annoying sales calls. Just type your code and get your answer completely anonymously.</p>
             </div>
 
             <div class="card">
-                <div class="card-icon">📱</div>
-                <h3>Fluent Interface</h3>
-                <p>Designed for speed. Use keyboard shortcuts on desktop, or tap through seamlessly on your mobile device.</p>
+                <div class="card-icon">🏎️</div>
+                <h3>Stupidly Fast</h3>
+                <p>Faster than finding your health insurance membership card in your wallet. Try it on your phone.</p>
             </div>
         </div>
     </section>
 
     <section class="hero" style="min-height: 60vh; text-align: center;">
-        <h2 style="font-size: 4rem; margin-bottom: 30px;">Stop guessing about<br>your health cover.</h2>
-        <button class="btn" style="padding: 20px 40px; font-size: 1.2rem;">Get Started Now</button>
+        <h2 style="font-size: 4rem; margin-bottom: 30px;">Stop guessing.<br>Start checking.</h2>
+        <button class="btn" style="padding: 20px 40px; font-size: 1.2rem;">Skip the Hold Music</button>
     </section>
 
     <footer>
