@@ -3,7 +3,7 @@ const cors = require('cors');
 const db = require('./db');
 
 const app = express();
-const port = 3000;
+const port = 3001; // changed to 3001 because Expo will use 3000 for live preview
 
 app.use(cors());
 app.use(express.json());

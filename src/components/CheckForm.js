@@ -29,9 +29,10 @@ export default function CheckForm({ onCheckResult }) {
   const [checking, setChecking] = useState(false);
   const [error, setError] = useState('');
 
-  // Use relative path for API calls since we'll run both on localhost for dev,
-  // but let's hardcode localhost for the MVP for simplicity across mobile/web testing
-  const API_BASE = 'http://localhost:3000/api';
+  // Let's use relative path for API calls in the browser, but fallback to absolute for dev
+  const API_BASE = typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+    ? '/api'
+    : 'http://localhost:3001/api';
 
   useEffect(() => {
     fetch(`${API_BASE}/insurers`)
