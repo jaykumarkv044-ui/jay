@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView, Alert } from 'react-native';
 
 const CORRECT_PIN = '1234';
+const PIN_DOTS = [0, 1, 2, 3];
+const KEYPAD_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const ParentPINScreen = ({ navigation }) => {
   const [pin, setPin] = useState('');
@@ -30,13 +32,13 @@ const ParentPINScreen = ({ navigation }) => {
       <Text style={styles.subtitle}>Enter PIN to access settings: {CORRECT_PIN}</Text>
 
       <View style={styles.pinDisplay}>
-        {[0, 1, 2, 3].map((_, i) => (
+        {PIN_DOTS.map((_, i) => (
           <View key={i} style={[styles.pinDot, pin.length > i && styles.pinDotFilled]} />
         ))}
       </View>
 
       <View style={styles.keypad}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+        {KEYPAD_NUMBERS.map((num) => (
           <TouchableOpacity key={num} style={styles.keyButton} onPress={() => handlePinEntry(num.toString())}>
             <Text style={styles.keyText}>{num}</Text>
           </TouchableOpacity>
